@@ -13,7 +13,7 @@ MAX_WIDTH = 600
 MAX_HEIGHT = 200
 FONT_NAME = 'Roboto'
 FONT_SIZE = 16
-NAME_LINE_HEIGHT = 35
+NAME_LINE_HEIGHT = 40
 LINE_HEIGHT = 25
 MARGIN = 20
 SEPARATOR_COLOR = (0, 0, 0, 255)
@@ -24,7 +24,7 @@ os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
 
 # Load Roboto font
 try:
-    name_font = ImageFont.truetype(FONT_NAME + '.ttf', 24)
+    name_font = ImageFont.truetype(FONT_NAME + '.ttf', 28)
     font = ImageFont.truetype(FONT_NAME + '.ttf', FONT_SIZE)
 except OSError:
     name_font = ImageFont.load_default()
@@ -49,9 +49,10 @@ def create_signature(row):
 
     logo = Image.open(logo_path)
 
-    # Calculate logo dimensions to fit max height while maintaining aspect ratio
+    # Calculate logo dimensions to fit max height while preserving ratio
     aspect_ratio = logo.width / logo.height
-    logo_height = MAX_HEIGHT - 2 * MARGIN  # Maximum height for logo
+    # Maximum height for logo
+    logo_height = MAX_HEIGHT - 2 * MARGIN
     logo_width = int(aspect_ratio * logo_height)
 
     # Ensure logo doesn't exceed available width
@@ -61,7 +62,7 @@ def create_signature(row):
 
     logo = logo.resize((logo_width, logo_height), Image.BICUBIC)
     img.paste(logo, (MARGIN, MARGIN))
-    
+
     # Enable font features and anti-aliasing for better text rendering
     font_features = ['rlig', 'calt']
     text_smoothness_params = {
@@ -71,8 +72,11 @@ def create_signature(row):
 
     # Draw separator
     separator_x = logo_width + MARGIN * 2
-    draw.line((separator_x, MARGIN, separator_x, MAX_HEIGHT - MARGIN), 
-              fill=SEPARATOR_COLOR, width=1)
+    draw.line(
+        (separator_x, MARGIN, separator_x, MAX_HEIGHT - MARGIN),
+        fill=SEPARATOR_COLOR,
+        width=1
+    )
 
     # Prepare text lines
     lines = [
@@ -87,30 +91,41 @@ def create_signature(row):
     text_area_x = separator_x + MARGIN
     text_area_height = MAX_HEIGHT - 2 * MARGIN
 
-    # Calculate y position for each line
-    y = MARGIN
+    # Calculate total height of all text
+    total_text_height = NAME_LINE_HEIGHT + (len(lines) - 1) * LINE_HEIGHT
+
+    # Calculate starting y position to center text vertically
+    y = MARGIN + (text_area_height - total_text_height) // 2
     for line in lines:
         if y + LINE_HEIGHT > text_area_height:
             break
             
         # Add text shadow
-        draw.text((text_area_x + 1, y + 1),  # Offset for shadow
-                  line, 
-                  fill=(0, 0, 0, 128),  # Semi-transparent black for shadow
-                  font=name_font if line == row['Name'] else font,
-                  **text_smoothness_params)
+        draw.text(
+            (text_area_x + 1, y + 1),  # Offset for shadow
+            line,
+            fill=(0, 0, 0, 128),  # Semi-transparent black for shadow
+            font=name_font if line == row['Name'] else font,
+            **text_smoothness_params
+        )
         
         if line == row['Name']:
-            draw.text((text_area_x, y), line, 
-                     fill=TEXT_COLOR, 
-                     font=name_font,
-                     **text_smoothness_params)
+            draw.text(
+                (text_area_x, y),
+                line,
+                fill=TEXT_COLOR,
+                font=name_font,
+                **text_smoothness_params
+            )
             y += NAME_LINE_HEIGHT
         else:
-            draw.text((text_area_x, y), line, 
-                     fill=TEXT_COLOR, 
-                     font=font,
-                     **text_smoothness_params)
+            draw.text(
+                (text_area_x, y),
+                line,
+                fill=TEXT_COLOR,
+                font=font,
+                **text_smoothness_params
+            )
             y += LINE_HEIGHT
 
     # Save image

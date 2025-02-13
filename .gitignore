@@ -173,3 +173,4 @@ cython_debug/
 # Output signatures
 /output
 .DS_Store
+.aider*
