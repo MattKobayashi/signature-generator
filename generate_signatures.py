@@ -9,12 +9,12 @@ from PIL import (
 # Configuration
 OUTPUT_DIRECTORY = 'output'
 LOGO_DIRECTORY = 'logos'
-MAX_WIDTH = 600
-MAX_HEIGHT = 200
+MAX_WIDTH = 1200
+MAX_HEIGHT = 400
 FONT_NAME = 'Roboto'
-FONT_SIZE = 16
-NAME_LINE_HEIGHT = 40
-LINE_HEIGHT = 25
+FONT_SIZE = 24
+NAME_LINE_HEIGHT = 100
+LINE_HEIGHT = 30
 MARGIN = 20
 SEPARATOR_COLOR = (0, 0, 0, 255)
 TEXT_COLOR = (0, 0, 0, 255)
@@ -24,7 +24,7 @@ os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
 
 # Load Roboto font
 try:
-    name_font = ImageFont.truetype(FONT_NAME + '.ttf', 28)
+    name_font = ImageFont.truetype(FONT_NAME + '.ttf', 60)
     font = ImageFont.truetype(FONT_NAME + '.ttf', FONT_SIZE)
 except OSError:
     name_font = ImageFont.load_default()
