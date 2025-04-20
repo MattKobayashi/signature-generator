@@ -1,3 +1,9 @@
+# /// script
+# requires-python = "==3.13"
+# dependencies = [
+#     "pillow==11.2.1",
+# ]
+# ///
 import csv
 import os
 from PIL import (
@@ -129,7 +135,7 @@ def create_signature(row):
             y += LINE_HEIGHT
 
     # Save image
-    filename = f"{row['Name']}_signature.png"
+    filename = f"{row['Name']}.png"
     img.save(os.path.join(OUTPUT_DIRECTORY, filename))
     print(f"Signature generated: {filename}")
 
