@@ -1,7 +1,7 @@
 # /// script
 # requires-python = "==3.13"
 # dependencies = [
-#     "pillow==11.3.0",
+#     "pillow==12.0.0",
 # ]
 # ///
 import csv
